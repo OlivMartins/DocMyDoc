@@ -1,5 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+/* 
+
+					/!\ A FAIRE /!\ 
+
+Fonction qui prend un nom de fichier en parametre et qui l'ouvre
+Gérer le double étoiles pour le commencement d'un commentaire (/**) possible avec les fonctions ftell?fseek? gérer le seek_cur-2.
+Faut-il faire le /// sachant que sa compile pas? 
+
+*/
+
+
 /*void open_file(FILE *file){
 	*file = fopen(*file,"r");
 	fclose(*file);
@@ -12,6 +24,7 @@ int main(int argc,char* argv[]){
 	*/
 	int car=0,tmp=0,com=0;
 	int espace = 0,retouralaligne = 0;
+	long curseur = 0;
 	FILE* doc = fopen("doc.txt","r");
 	if (doc==NULL)
 		exit(1);
@@ -21,8 +34,8 @@ int main(int argc,char* argv[]){
 			if (car == 0)
 				tmp = car;
 			car = fgetc(doc);
-			
-			if(tmp == '/' && car == '*'){
+
+			if(tmp == '/' && car == '*' ){
 				printf("COMMENCEMENT COMMENTAIRE\n");
 				com = 1;
 				printf(" bool com = %d\n",com);
@@ -39,12 +52,12 @@ int main(int argc,char* argv[]){
 			}
 			
 			tmp = car;
-		
+			
 		}while(car != EOF);
 		
 		fclose(doc);
 	}
 
-printf("espace = %d , retouralaligne = %d",espace,retouralaligne);
+printf("espace = %d , retour a la ligne = %d",espace,retouralaligne);
 return 0;
 }
