@@ -7,7 +7,7 @@
 
 Fonction qui prend un nom de fichier en parametre et qui l'ouvre
 Gérer le double étoiles pour le commencement d'un commentaire (/**) possible avec les fonctions ftell?fseek? gérer le seek_cur-2.
-Faut-il faire le /// sachant que sa compile pas? 
+Faut-il faire le /// sachant que ça compile pas? 
 
 */
 
@@ -40,6 +40,8 @@ int main(int argc,char* argv[]){
 				com = 1;
 				printf(" bool com = %d\n",com);
 			}
+			
+
 			if(car == ' ')
 				espace++;
 			if(car == '\n')
@@ -58,6 +60,6 @@ int main(int argc,char* argv[]){
 		fclose(doc);
 	}
 
-printf("espace = %d , retour a la ligne = %d",espace,retouralaligne);
+printf("espace = %d , retour a la ligne = %d \n",espace,retouralaligne);
 return 0;
 }

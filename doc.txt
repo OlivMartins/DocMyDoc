@@ -1,0 +1,11 @@
+
+*/
+/*********************************
+ **  \fn        int func()      **
+     \brief     Une petite fonction qui ne fait pas grand chose...
+ ********************************/
+//////////////////////////////////  \author Moi
+///  \details   Quel bel exemple de fonction inutile !
+///             On aurait largement pu s'en passer...
+///  \return    0
+//////////////////////////////////
