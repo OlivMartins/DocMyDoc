@@ -22,7 +22,7 @@ int main(int argc,char* argv[]){
 	printf("Test\n");
 	open_file(test);
 	*/
-	int car=0,tmp=0,com=0;
+	int car=0,tmp=0,com=0,car1=0;
 	int espace = 0,retouralaligne = 0;
 	long curseur = 0;
 	FILE* doc = fopen("doc.txt","r");
@@ -36,12 +36,16 @@ int main(int argc,char* argv[]){
 			car = fgetc(doc);
 
 			if(tmp == '/' && car == '*' ){
-				printf("COMMENCEMENT COMMENTAIRE\n");
-				com = 1;
-				printf(" bool com = %d\n",com);
+				car1 = fgetc(doc);
+				if(car1 == car && com == 0){
+					printf("COMMENCEMENT COMMENTAIRE\n");
+					com = 1;
+					printf(" bool com = %d\n",com);
+				}
 			}
+				
+				printf("\t\t tmp = %c , car = %c , car1 = %c \n",tmp,car,car1);
 			
-
 			if(car == ' ')
 				espace++;
 			if(car == '\n')
