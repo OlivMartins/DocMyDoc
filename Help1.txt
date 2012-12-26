@@ -1,0 +1,96 @@
+					1ère Séquence entreprise : 
+
+Intégration continue : 
+
+Le principe est de vérifier, idéalement à chaque modification de code source, que le résultat de ces modifications 
+ne produit pas de régression sur l’application.
+Autrement dit, le but est de faire de l’intégration un non-événement : au lieu d’avoir le travail de 10 développeurs
+mis en commun une fois par mois — et, forcément, que tout casse pendant quelques jours, parce que chaque développeur 
+avait interprêté les specs à sa façon —, cette mise en commun se fait maintenant à chaque modification, en continu ; 
+ce qui permet d’augmenter les chances que chaque portion de l’application fonctionne avec ses autres composantes.*
+
+Les avantages de l'IC : 
+
+Les problèmes d’intégration sont détectés rapidement, et peuvent donc être corrigés au fil de l’eau, sans avoir à 
+attendre une passe d’intégration manuelle qui n’a lieu que trop rarement.
+
+Les tests automatisés mis en place sur l’application, et joués à chaque intégration, permettent d’identifier 
+rapidement les changements problématiques,
+
+La dernière version stable de l’application est connue, et peut rapidement être obtenue (pour tests, démonstration,…)
+
+Les étapes de l'intégration continue(source wiki) :
+	maintenir un dépôt unique de code source versionné,
+	automatiser les compilations,
+	rendre les compilations auto-testantes,
+	tout le monde commit everyday, tout commit doit compiler le tronc(trunk) sur une machine d'intégration, 
+	maintenir une compilation courte, 
+	tester dans un environnement de production cloné,
+	rendre disponble facilement le dernier executable,
+	tout le monde doit voir ce qui se passe, automatiser le déploiement.
+
+Gestion de versions :
+
+La gestion de versions (en anglais version control ou revision control) consiste à maintenir l'ensemble des versions 
+d'un ou plusieurs fichiers.
+
+Gestion de versions centralisée : 
+
+Avec les logiciels de gestion de versions centralisée, comme CVS et Subversion (SVN), il n'existe qu'un seul dépôt 
+des versions qui fait référence. Cela simplifie la gestion des versions mais est contraignant pour certains usages 
+comme le travail sans connexion au réseau, ou tout simplement lorsque l'on travaille sur des branches expérimentales ou contestées.
+
+Gestion de versions décentralisée(Git) :
+
+La gestion de versions décentralisée consiste à voir l'outil de gestion de versions comme un outil permettant à 
+chacun de travailler à son rythme, de façon désynchronisée des autres, puis d'offrir un moyen à ces développeurs 
+de s'échanger leur travaux respectifs. De fait, il existe plusieurs dépôts pour un même logiciel.
+
+
+Jenkins : Serveur d'intégration continue pour java.
+	Avantage : Meilleur organisation des projets, Visualisation des builds grâce à l'interface graphique 
+
+SCM(Software Configuration Management-Gestion de configuration logicielle) : 
+
+	l'identification de la configuration,
+	la maîtrise de la configuration,
+	l'enregistrement de l'état de la configuration,
+	l'audit de la configuration.
+
+Maven : Tests automatique avec résultats détaillés, Synchronisations des projets indépendants.
+	Chaque développeur peut avoir un maven différent c'est dû au fait des dépendances installés.
+	Si les tests mvn sont réussis un build est créer.
+	Qualiter des métadonnées importante.
+
+	Description :
+	
+	POM.XML(Project Object Model ou cycle de vie) : compile , test , package , install , deploy(ou initialiser, 
+	compiler, assembler). Ce cycle de vie est une convention par défault de maven ceci est fait pour éviter les 
+	configurations rébarbatif et sa assure au développeur que le build a été créé avec succès et dans de bonnes 
+	conditions. Suivant les besoins(dépendances) du projet on ajoute à ce tronc(POM.XML) des plugins ou 
+	dépendances pour pouvoir ajouter les spécificités dont le projet nécéssite.	
+
+
+CIS : Superviseur des projets jenkins. Visualisation de tout les jobs.
+
+Nexus : Repository manager Maven
+
+Mercurial, git créer en 2005 : ce sont des gestionnaires de versions de type décentralisé (DVCS) 
+
+Clearcase : même chose que GIT et Mercurial à la différence que ce gestionnaire est centralisé(CVCS)
+
+Clearcase permet d'enregistrer comme dans une "base de données" les différentes versions conçus par les développeurs. 
+Chaque développeur doit donc enregistrer ses travaux dans le "Central Repository"(type bdd) mais il doit aussi 
+passer par celui-ci pour récupérer les différents travaux des autres développeurs. Ce système CVCS permet de faire un
+"tracking" précis pouvant être utilisé par les chefs de projets pour voir l'évolution du travail fait par chacun des
+développeurs. ClearCase n'est pas utilisé cher Alcatel-Lucent, mais il est encore très utilisé comme par exemple cher
+IBM.
+
+Mercurial permet de se servir d'un central repository comme ClearCase mais celui-ci n'a pas le même but. En effet
+le central repository est utilisé comme "référence" par les développeurs c'est-à-dire qu'ils enregistrent leurs 
+travaux le soir ou lorsqu'ils ont un projet qui build pour pouvoir avoir une trace. L'avantage de Mercurial est que
+chaque développeur peut récupérer les travaux des autres développeurs sans passer par le central repository ce qui
+fait gagner du temps et des ressources( et dc de l'argent) car les va et vient du type CVCS peut prendre du temps.
+
+
+À VOIR : JUNIT , GRAILS
