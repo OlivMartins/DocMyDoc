@@ -13,7 +13,7 @@ Faut-il faire le /// sachant que ça compile pas?
 
 
 												/* Remove for testing the board */
-/*void init_tab(int tab[MAX]){
+void init_tab(int tab[MAX]){
 	int i =0;
 	for(i=0;i<MAX;i++)
 		tab[i] = 0;
@@ -30,7 +30,7 @@ void affichage(int tab[MAX]){
 	printf("**********************\n");
 	printf("	FIN TABLEAU\n");
 	printf("**********************\n");
-}*/
+}
 												/* Remove for testing the board2 */
 /*void open_file(FILE *file){
 	*file = fopen(*file,"r");
@@ -43,13 +43,12 @@ int main(int argc,char* argv[]){
 	open_file(test);
 	*/
 	int car=0,car_before1=0,com=0,car_after1=0;
-	int espace = 0,retouralaligne = 0;
-												/* Remove for testing the board2 */
-	/*int tab[MAX];
+	int espace = 0,retouralaligne = 0,fn=0;				
+	int tab[MAX];
 	init_tab(&tab[0]);
 	affichage(&tab[0]);
-	*/
-												/* Remove for testing the board2 */
+	
+												
 	int i=0;
 	FILE* doc = fopen("doc.txt","r");
 	if (doc==NULL)
@@ -92,6 +91,13 @@ int main(int argc,char* argv[]){
 					
 					if(car_after1 == 'n'){
 						printf("\tFonction prototype \n");
+						do{
+							tab[i] = fgetc(doc);
+							printf("tab[%d] = %c \n",i,tab[i]);
+							i++;
+							if(i==27)
+								
+						}while(fn != 1 && i<100);
 					}
 				}
 				if(car == ' ')
