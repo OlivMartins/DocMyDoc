@@ -6,7 +6,7 @@
 					/!\ A FAIRE /!\ 
 
 Fonction qui prend un nom de fichier en parametre et qui l'ouvre
-Faut-il faire le /// sachant que ça compile pas? 
+Faut-il faire le /// sachant que ça compile pas? Oui, pour faire fonctionner les /// cmd : gcc fichier.c -Wall -ansi -std=c99 
 
 */
 
@@ -90,7 +90,7 @@ int main(int argc,char* argv[]){
 					car_after1 = fgetc(doc);
 					
 					if(car_after1 == 'n'){
-						printf("\tFonction prototype \n");
+						puts("\tFonction prototype");
 						do{
 							tab[i] = fgetc(doc);
 							printf("tab[%d] = %c \n",i,tab[i]);
@@ -107,7 +107,7 @@ int main(int argc,char* argv[]){
 			}
 			
 			if(car_before1 == '*' && car == '/' && com == 1){
-				printf("FERMETURE COMMENTAIRE\n");	
+				puts("FERMETURE COMMENTAIRE");	
 				com = 0;
 				printf(" bool com2 = %d\n",com);
 				return 0;
