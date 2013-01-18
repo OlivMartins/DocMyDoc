@@ -5,15 +5,18 @@
 
 					/!\ A FAIRE /!\ 
 
+
 Paquet Debian : Bon tuto sur http://www.siteduzero.com/informatique/tutoriels/creer-un-paquet-deb/le-contenu-du-paquet
 La configuration du control à revoir.
 
 Approfondir le projet c:
+	/!\ Priorité /!\
+		Faire des fonctions pour diminuer le gros problème en sous problèmes dc nvx fichier fonctions.c dc makefile
+	
 	le prof veut faire docmydoc fichier1.c fichier2.c fichier3.c
 	- Peut être commencer par prendre en compte les noms des fichiers (avec argc et argv? a voir)
-	- Voir les \ avec plus de deux caractères car \fn fonctionne(ou pas?) mais \brief pas encore gérer
+	- Voir les \ avec plus de deux caractères car \fn fonctionne(ou pas?) mais \brief pas encore gérer. C'est fait de mannière "gourou"
 	
-
 Pour faire fonctionner les /// cmd : gcc fichier.c -Wall -ansi -std=c99 
 
 */
