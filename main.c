@@ -5,8 +5,7 @@
 
 					/!\ A FAIRE /!\ 
 
-Fonction qui prend un nom de fichier en parametre et qui l'ouvre
-Faut-il faire le /// sachant que ça compile pas? Oui, pour faire fonctionner les /// cmd : gcc fichier.c -Wall -ansi -std=c99 
+Pour faire fonctionner les /// cmd : gcc fichier.c -Wall -ansi -std=c99 
 
 */
 
@@ -32,23 +31,22 @@ void affichage(int tab[MAX]){
 	printf("**********************\n");
 }
 												/* Remove for testing the board2 */
-/*void open_file(FILE *file){
-	*file = fopen(*file,"r");
+
+// Création d'un fichier avec la chaine entrer en paramètre du fichier : 
+/*void open_file(char *nom_fichier){
+	FILE *file=NULL;
+	*file = fopen(nom_fichier,"w+"); /!\ ATTENTION EFFACE TOUT LE FICHIER nom_fichier et créer un nouveau avec w+ /!\
+	*file = fopen(nom_fichier,"r"); /!\ Lit le fichier nom_fichier mais il doit être crée en amont il ne le crée pas tout seul /!\
 	fclose(*file);
 }*/
 int main(int argc,char* argv[]){
 
-	/*FILE * test;
-	printf("Test\n");
-	open_file(test);
-	*/
 	int car=0,car_before1=0,com=0,car_after1=0;
 	int espace = 0,retouralaligne = 0,fn=0;				
 	int tab[MAX];
 	init_tab(&tab[0]);
 	affichage(&tab[0]);
-	
-												
+													
 	int i=0;
 	FILE* doc = fopen("doc.txt","r");
 	if (doc==NULL)
@@ -105,21 +103,17 @@ int main(int argc,char* argv[]){
 				if(car == '\n')
 					retouralaligne++;
 			}
-			
+
 			if(car_before1 == '*' && car == '/' && com == 1){
 				puts("FERMETURE COMMENTAIRE");	
 				com = 0;
 				printf(" bool com2 = %d\n",com);
 				return 0;
 			}
-			
+
 			car_before1 = car;
-			
-		}while(car != EOF);
-		
+		}while(car != EOF);	
 		fclose(doc);
 	}
-
-
 return 0;
 }
