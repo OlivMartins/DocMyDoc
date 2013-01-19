@@ -7,7 +7,7 @@
 
 
 Paquet Debian : Bon tuto sur http://www.siteduzero.com/informatique/tutoriels/creer-un-paquet-deb/le-contenu-du-paquet
-La configuration du control à revoir.
+La configuration du control à revoir : qu'est-ce qui faut mettre au paramètre Depends?
 
 Approfondir le projet c:
 	/!\ Priorité /!\
@@ -15,51 +15,71 @@ Approfondir le projet c:
 	
 	le prof veut faire docmydoc fichier1.c fichier2.c fichier3.c
 	- Peut être commencer par prendre en compte les noms des fichiers (avec argc et argv? a voir)
-	- Voir les \ avec plus de deux caractères car \fn fonctionne(ou pas?) mais \brief pas encore gérer. C'est fait de mannière "gourou"
+	- Voir les \ avec plus de deux caractères car \fn fonctionne mais \brief pas encore gérer. C'est fait de mannière "gourou"
 	
 Pour faire fonctionner les /// cmd : gcc fichier.c -Wall -ansi -std=c99 
 
 */
 
-
-
-												/* Remove for testing the board */
 void init_tab(int tab[MAX]){
 	int i =0;
 	for(i=0;i<MAX;i++)
 		tab[i] = 0;
 }
+
 void affichage(int tab[MAX]){
 	int i=0;
-	printf("**********************\n");
-	printf("INITIALISATION TABLEAU\n");
-	printf("**********************\n");
+	
 	for(i=0;i<MAX;i++){
-		
-		printf("tab[%d] = %d \n",i,tab[i]);
+		if(tab[i] == 0){
+			i++;
+		}
+		else{
+			printf("tab[%d] = %d \n",i,tab[i]);
+		}
 	}
-	printf("**********************\n");
-	printf("	FIN TABLEAU\n");
-	printf("**********************\n");
+	
 }
-												/* Remove for testing the board2 */
-
-// Création d'un fichier avec la chaine entrer en paramètre du fichier : 
-/*void open_file(char *nom_fichier){
-	FILE *file=NULL;
-	*file = fopen(nom_fichier,"w+"); /!\ ATTENTION EFFACE TOUT LE FICHIER nom_fichier et créer un nouveau avec w+ /!\
-	*file = fopen(nom_fichier,"r"); /!\ Lit le fichier nom_fichier mais il doit être crée en amont il ne le crée pas tout seul /!\
-	fclose(*file);
+												
+	
+// Lecture d'un fichier avec la chaine entrer en paramètre du fichier : 
+/*int open_file(char *nom_fichier){
+	FILE *file = NULL;
+	file = fopen(nom_fichier,"r");
+	if(file == NULL){
+		fprintf(stderr,"Error : File don't exist \n");
+		return -1;
+	}
+	else{
+		printf("Openning %s OK \n",nom_fichier);
+	} 
+	fclose(file);
+	return 0;
 }*/
+/*
+
+A mettre dans la fonction main pour l'ouverture d'un fichier avec le paramètre argv
+
+for(i=argc;i>0;i--){
+		argv++;
+		argc--;
+		if(argc > 0)
+			open_file(*argv);
+	}
+*/
+
+
 int main(int argc,char* argv[]){
 
 	int car=0,car_before1=0,com=0,car_after1=0;
-	int espace = 0,retouralaligne = 0,fn=0;				
+	int car_after[7];
+	int fn=0,br=0;				
 	int tab[MAX];
+	int i=0;
 	init_tab(&tab[0]);
 	affichage(&tab[0]);
 													
-	int i=0;
+
 	FILE* doc = fopen("doc.txt","r");
 	if (doc==NULL)
 		exit(1);
@@ -68,19 +88,17 @@ int main(int argc,char* argv[]){
 		do{
 			
 			car = fgetc(doc);
-
 			/* 
 				Car = Caractère actuel , car_before1 = car-1 et car_after1 = car+1 j'ai fait sa pour détecter les /**,les /fn
 				Ex : 
 					- /fn => car_before1 = '/' , car = 'f' , car_after1 = 'n' 
 			*/
-
-			if(car_before1 == '/' && car == '*'){
+			if((car_before1 == '/' && car == '*') || (car_before1 == '/' && car == '/')){
 				car_after1 = fgetc(doc);
 				if(car_after1 == car && com == 0){
 					printf("COMMENCEMENT COMMENTAIRE\n");
 					com = 1;
-					printf("bool com = %d\n",com);
+					
 				}
 			}
 			/* TEST => /!\ IF CAR = \ WE WANT TO KEEP EVERY CHARACTERE IN A BOARD UP TO THE CHARACTERE \n */
@@ -101,25 +119,48 @@ int main(int argc,char* argv[]){
 					
 					if(car_after1 == 'n'){
 						puts("\tFonction prototype");
+						
 						do{
 							tab[i] = fgetc(doc);
-							printf("tab[%d] = %c \n",i,tab[i]);
+							if(tab[i] == '\n')
+								fn=1;	
+							printf("%c",tab[i]);
 							i++;
-							
-								
 						}while(fn != 1 && i<100);
+						puts("\tFin Fonction");
+					}
+					/* pour le i de file 
+					if(car_after1 == 'i'){
+
+					}
+					*/
+				}
+				if(car_before1 == '\\' && car == 'b'){
+					car_after1 == fgetc(doc);
+					if(car_after1 == 'r'){
+						car_after[0] = fgetc(doc);	
+						if(car_after[0] == 'i'){
+							car_after[1] = fgetc(doc);
+							if(car_after[1] == 'e'){
+								car_after[2] = fgetc(doc);
+								if(car_after[2] == 'f'){
+									puts("Brief spotted");
+									do{
+										tab[i] = fgetc(doc);
+										if(tab[i] == '\n')
+											br=1;	
+										printf("%c",tab[i]);
+										i++;
+									}while(br != 1 && i<100);
+								}
+							}
+						}
 					}
 				}
-				if(car == ' ')
-					espace++;
-				if(car == '\n')
-					retouralaligne++;
 			}
-
 			if(car_before1 == '*' && car == '/' && com == 1){
 				puts("FERMETURE COMMENTAIRE");	
 				com = 0;
-				printf(" bool com2 = %d\n",com);
 				return 0;
 			}
 
