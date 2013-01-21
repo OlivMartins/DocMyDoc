@@ -5,6 +5,7 @@
      \brief     Une petite fonction qui ne fait pas grand chose...
      \date	21 janvier 2013
      \version	1.0
+     \param	argv	ALDZQDZQD
  ********************************/
 //////////////////////////////////  \author Moi
 ///  \details   Quel bel exemple de fonction inutile !

@@ -3,6 +3,19 @@
 #define MAX_LIGNES 426
 #define TAILLE_TAB 100
 
+
+/*
+
+
+/!\ Mieux gérer le \param et le \details /!\
+
+A Voir :
+	- si on peut pas optimiser les tab[i-4] etc... En faisant des switch peut être
+	- Essayer d'optimiser tout les tableaux.. y en a trop et ça se répète très probable qu'il y est une optimisation à faire
+	peut être avec une fonction qui prend un tableau en paramètre mais problème avec le fgetc faudrait ouvrir le fichier dans la fonction
+
+*/
+
 void init_tab(char tab[MAX_LIGNES]){
 	int i =0;
 	for(i=0;i<MAX_LIGNES;i++)
@@ -96,6 +109,13 @@ int open_file(char *nom_fichier){
 						{
 							pm = 0;
 							com_slash = 0;
+						}
+						if(tab_param[j] == '\t' || (tab_param[j-1] == ' ' && tab_param[j] == ' '))
+						{	
+							while(tab_param[k] != ' '){
+								printf("param : %c",tab_param[k]);
+								k++;
+							}
 						}
 						j++;
 					}
