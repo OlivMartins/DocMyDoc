@@ -1,10 +1,10 @@
 */
 /*********************************
-\file		doc.txt
- **  \fn        int func()      **
+\file		fichier.c
+ **  \fn        int fichier()      **
      \brief     Une petite fonction qui ne fait pas grand chose...
-     \date	21 janvier 2013
-     \version	1.0
+     \date	25 janvier 2013
+     \version	2.0
  ********************************/
 //////////////////////////////////  \author Moi
 ///  \details   Quel bel exemple de fonction inutile !
