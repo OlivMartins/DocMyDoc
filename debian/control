@@ -4,12 +4,9 @@ Priority: extra
 Maintainer: oliv <oliv@unknown>
 Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 3.9.2
-Homepage: <insert the upstream URL, if relevant>
-#Vcs-Git: git://git.debian.org/collab-maint/docmycode.git
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/docmycode.git;a=summary
+
 
 Package: docmycode
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Depends: 
+Description: Mise en page de la documentation du code 

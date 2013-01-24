@@ -1,0 +1,8 @@
+Package: docmycode
+Version: 1.0-1
+Architecture: i386
+Maintainer: oliv <oliv@unknown>
+Installed-Size: 39
+Section: unknown
+Priority: extra
+Description: Mise en page de la documentation du code

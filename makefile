@@ -1,3 +1,7 @@
+DESTDIR= 
+BINDIR=/usr/bin
+
+
 all : docmycode
 
 docmycode : docmycode.o main.o
@@ -11,3 +15,7 @@ docmycode.o : docmycode.c
 
 clear: 
 	rm -rf *.o
+
+install:
+	install -d -m 0755 -o root -g root $(DESTDIR)/$(BINDIR)
+	install    -m 0755 -o root -g root docmycode $(DESTDIR)/$(BINDIR)
