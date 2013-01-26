@@ -7,14 +7,16 @@
 
 
 /!\ Mieux gérer le \param et le \details /!\
-
+/!\ Faire une fonction qui supprime les espaces, tabulations inutiles /!\
+/!\ Faire une fonction qui prend en paramètre un tableau et affiche son contenu /!\
+/!\ Si tab[i] == '\\' on appelle une fonction qui analyse ce qu'il y a après jusqu'à \n (sauf pour details cas particulier) /!\
+/!\ Faire une fonction pour reconnaitre quel type de commentaire on a affaire : avec /// ou / ** ? /!\
 A Voir :
-	- si on peut pas optimiser les tab[i-4] etc... En faisant des switch peut être
-	- Essayer d'optimiser tout les tableaux.. y en a trop et ça se répète très probable qu'il y est une optimisation à faire
-	peut être avec une fonction qui prend un tableau en paramètre mais problème avec le fgetc faudrait ouvrir le fichier dans la fonction
-
+	- si on peut optimiser les tab[i-4] etc... En faisant des switch? fonctions comprenant un tableau en paramètre ? => avec les fonctions
+	- Si on ouvre un fichier et qu'on n'appelle pas fclose peut être qu'on peut manipuler le fichier ouvert. 
+	
+	
 */
-
 
 
 int main(int argc,char *argv[]){

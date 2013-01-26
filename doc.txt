@@ -5,16 +5,27 @@
      \brief     Une petite fonction qui ne fait pas grand chose...
      \date	21 janvier 2013
      \version	1.0
-     \param	argv	ALDZQDZQD
+     \param		argv	ALDZQDZQD
  ********************************/
 //////////////////////////////////  \author Moi
 ///  \details   Quel bel exemple de fonction inutile !
 ///             On aurait largement pu s'en passer...
+C'EST PAS UN COMMENTAIRE 
+/*
+
+encore un detail mais avec com_normal 
+
+*/
 ///  \return    0
 \bug  DOIT PAS S'AFFICHER
 //////////////////////////////////
 /// \fn suivi de sa pour la fonction()
-/** \bug LA LE BUG SAFFICHE 
+/** \bug BUG1 S'AFFICHE 
 */
+
 Ceci n'est pas un commentaire
 fonction brief date version return param bug 
+blablalalblallaall
+
+
+ \bug BUG2 S'AFFICHE
