@@ -8,27 +8,37 @@ void init_tab(char tab[MAX_LIGNES]){
 	for(i=0;i<MAX_LIGNES;i++)
 		tab[i] = 0;
 }
-int display_tab(char tab[TAILLE_TAB]){
+
+				/****************************************************************************************************
+															DISPLAY
+				****************************************************************************************************/
+
+int display_tab(char tab[TAILLE_TAB],char *nom){
 	int i;
-	for(i = 0;i<TAILLE_TAB;i++){
+	printf("%s...\n",nom);
+	for(i = 1;i<TAILLE_TAB;i++){
 		if(tab[i] == '\n'){
 			puts("");
 			return 0;
 		}
-		if(tab[i] == ' ' && tab[i+1] == ' ')
-			printf("");
-		else{
+		
+		if (tab[i] >= 65 && tab[i] <= 122)
 			printf("%c",tab[i]);
+		if(tab[i] == '(' || tab[i] == ')' || tab[i] == '.' || (tab[i] == ' ' && tab[i+1] != ' ') || tab[i] == '\'' || (tab[i] >= '0' && 
+			tab[i] <= '9')){
+				printf("%c",tab[i]);
 		}
+		if(tab[i] < 65 && tab[i] > 122 && tab[i] != '(' && tab[i] != ')')
+			printf("");
 	}
 	
 	return 0;
 }
-void is_a_com(char tab[TAILLE_TAB]){
+/*void is_a_com(char tab[TAILLE_TAB]){
 	int i=0;
 	int com_slash = 0,com_normal=0;
 	for(i=0;i<MAX_LIGNES;i++){
-		if(tab[i-2] == '/' && tab[i-1] == '/' && tab[i] == '/'){
+		if(tab1[i-2] == '/' && tab1[i-1] == '/' && tab[i] == '/'){
 				// Gérer le cas ou on est déjà dans un com et qu'il y a 3 slash
 			if(com_slash == 0 && com_normal == 0){
 				com_slash = 1;
@@ -39,11 +49,11 @@ void is_a_com(char tab[TAILLE_TAB]){
 				//puts("On est déjà dans un commentaire");
 			}
 		}
-		if(tab[i-2] == '/' && tab[i-1] == '*' && tab[i] == '*'){
+		if(tab1[i-2] == '/' && tab1[i-1] == '*' && tab[i] == '*'){
 			com_normal = 1;
 			//puts("COMMENTAIRE NORMAL");
 		}
-		if(tab[i-1] == '*' && tab[i] == '/'){
+		if(tab1[i-1] == '*' && tab[i] == '/'){
 			com_normal = 0;
 			//puts("FIN COMMENTAIRE NORMAL");
 		}
@@ -57,15 +67,31 @@ void is_a_com(char tab[TAILLE_TAB]){
 		}
 	}
 	
-}
+}*/
 
 int open_file(char *nom_fichier){
 	
-	char tab[MAX_LIGNES],tab_fn[TAILLE_TAB],tab_br[TAILLE_TAB],tab_fi[TAILLE_TAB],tab_au[TAILLE_TAB],tab_vers[TAILLE_TAB];
-	char tab_date[TAILLE_TAB],tab_param[TAILLE_TAB],tab_rt[TAILLE_TAB],tab_bug[TAILLE_TAB],tab_det[300];
+	char tab1[MAX_LIGNES];
+	
+	char tab_det[300];
+	char tab[10][TAILLE_TAB];
 	int com_slash = 0,com_normal=0;
-	int i=0;
-	int au=0,pm = 0,date = 0,rt = 0,bug = 0,vers = 0,fn=0,j=0,br = 0,fi=0,det = 0,k=4;
+	int i=0,j=0;
+
+	/** 
+	
+	Le tableau temporaire sert à afficher le texte des balises spéciales utilisées plusieurs fois dans le code
+		ex: \oncontinue int func() et suivi de sa pour la function() dans doc.txt
+	Initialisation du tableau temporaire 
+	
+	*/
+	int tmp[9];
+	for(i=0;i<10;i++)
+		tmp[i] = 0;
+	
+
+	int det = 0,k=4;
+	int oncontinue = 0;
 	FILE *file = NULL;
 	file = fopen(nom_fichier,"r");
 	printf("Openning %s... ",nom_fichier);
@@ -74,14 +100,14 @@ int open_file(char *nom_fichier){
 		fprintf(stderr,"Error : This file don't exist \n");
 		return -1;
 	}
-	/*else{
-		init_tab(&tab[0]);
+	else{
+		init_tab(&tab1[0]);
 		puts("OK ! \nAnalyse en cours...");
 		while(i<MAX_LIGNES){
 
-			tab[i] = fgetc(file);
+			tab1[i] = fgetc(file);
 	
-			if(tab[i-2] == '/' && tab[i-1] == '/' && tab[i] == '/'){
+			if(tab1[i-2] == '/' && tab1[i-1] == '/' && tab1[i] == '/'){
 				// Gérer le cas ou on est déjà dans un com et qu'il y a 3 slash
 				if(com_slash == 0 && com_normal == 0){
 					com_slash = 1;
@@ -91,193 +117,278 @@ int open_file(char *nom_fichier){
 					//puts("On est déjà dans un commentaire");
 				}
 			}
-			if(tab[i-2] == '/' && tab[i-1] == '*' && tab[i] == '*'){
+			if(tab1[i-2] == '/' && tab1[i-1] == '*' && tab1[i] == '*'){
 				com_normal = 1;
 				//puts("COMMENTAIRE NORMAL");
 			}
-			if(tab[i-1] == '*' && tab[i] == '/'){
+			if(tab1[i-1] == '*' && tab1[i] == '/'){
 				com_normal = 0;
 				//puts("FIN COMMENTAIRE NORMAL");
 			}
-			if(tab[i] == '\n'){
+			if(tab1[i] == '\n'){
 				//puts("Retour a la ligne");
 				com_slash = 0;
 			}
-			// Commencement de l'analyse du fichier passer en paramètre
+			
+			// Beginning of the analyze of file with parameters 
 			if(com_slash == 1 || com_normal == 1){
 				
-				if(tab[i-2] == '\\' && tab[i-1] == 'f' && tab[i] == 'n'){
+				/****************************************************************************************************
+															FUNCTION
+				****************************************************************************************************/
+
+				if(tab1[i-2] == '\\' && tab1[i-1] == 'f' && tab1[i] == 'n'){
 					//puts("Prototype de la fonction..");
-					fn = 1;
-					while(fn == 1){
-						tab_fn[j] = fgetc(file);
-						
-						if(tab_fn[j] == '\n'){
-							fn=0;
+					oncontinue = 1;
+					j=0;
+
+					if(tmp[0] != 0 && j == 0)
+						j = tmp[0];
+					
+					while(oncontinue == 1){
+
+						tab[0][j] = fgetc(file);
+						if(tab[0][j] == '\n'){
+							oncontinue = 0;
 							com_slash = 0;
+							tmp[0] = j;
 						}
-						
 						j++;
+						
 					};
 				}
-				if(tab[i-5] == '\\' && tab[i-4] == 'b' && tab[i-3] == 'r' && tab[i-2] == 'i' && tab[i-1] == 'e' && tab[i] == 'f'){
+
+				/****************************************************************************************************
+															BRIEF
+				****************************************************************************************************/
+
+				if(tab1[i-5] == '\\' && tab1[i-4] == 'b' && tab1[i-3] == 'r' && tab1[i-2] == 'i' && tab1[i-1] == 'e' && tab1[i] == 'f'){
 					//puts("Brief..");
 					j=0;
-					br = 1;
-					while(br == 1){
-						tab_br[j] = fgetc(file);
+					oncontinue = 1;
+					if(tmp[1] != 0 && j == 0)
+						j = tmp[1];
+					while(oncontinue == 1){
+						tab[1][j] = fgetc(file);
 							
-						if(tab_br[j] == '\n')
+						if(tab[1][j] == '\n')
 						{
-							br = 0;
+							oncontinue = 0;
 							com_slash = 0;
+							tmp[1] = j;
 						}
 						j++;
 					}
 				}
-				if(tab[i-5] == '\\' && tab[i-4] == 'p' && tab[i-3] == 'a' && tab[i-2] == 'r' && tab[i-1] == 'a' && tab[i] == 'm'){
+
+				/****************************************************************************************************
+															Parameters
+				****************************************************************************************************/
+
+				if(tab1[i-5] == '\\' && tab1[i-4] == 'p' && tab1[i-3] == 'a' && tab1[i-2] == 'r' && tab1[i-1] == 'a' && tab1[i] == 'm'){
 					//puts("Paramètres..");
 					j=0;
-					pm = 1;
-					while(pm == 1){
-						tab_param[j] = fgetc(file);
+					oncontinue = 1;
+					if(tmp[2] != 0 && j == 0)
+						j = tmp[2];
+					while(oncontinue == 1){
+						tab[2][j] = fgetc(file);
 						
-						if(tab_param[j] == '\n')
+						if(tab[2][j] == '\n')
 						{
-							pm = 0;
+							oncontinue = 0;
 							com_slash = 0;
+							tmp[2] = j;
 						}
 						/*if(tab_param[j] == '\t' || (tab_param[j-1] == ' ' && tab_param[j] == ' '))
 						{	
 							
 							
 						}*/
-/*						j++;
+						j++;
 					}
 				}
-/*				if(tab[i-6] == '\\' && tab[i-5] == 'a' && tab[i-4] == 'u' && tab[i-3] == 't' && tab[i-2] == 'h' && tab[i-1] == 'o' && tab[i] == 'r'){
+
+
+				/****************************************************************************************************
+															AUTHOR
+				****************************************************************************************************/
+
+
+				if(tab1[i-6] == '\\' && tab1[i-5] == 'a' && tab1[i-4] == 'u' && tab1[i-3] == 't' && tab1[i-2] == 'h' && tab1[i-1] == 'o' 
+					&& tab1[i] == 'r'){
 					//puts("Author..");
 					j=0;
-					au = 1;
-					while(au == 1){
-						tab_au[j] = fgetc(file);
-						if(tab_au[j] == '\n')
+					oncontinue = 1;
+					if(tmp[3] != 0 && j == 0)
+						j = tmp[3];
+					while(oncontinue == 1){
+						tab[3][j] = fgetc(file);
+						if(tab[3][j] == '\n')
 						{
-							au = 0;
+							oncontinue = 0;
 							com_slash = 0;
+							tmp[3] = j;
 						}
 						j++;
 					}
 				}
-				if(tab[i-7] == '\\' && tab[i-6] == 'v' && tab[i-5] == 'e' && tab[i-4] == 'r' && tab[i-3] == 's' && tab[i-2] == 'i' && 
-					tab[i-1] == 'o' && tab[i] == 'n'){
+
+				/****************************************************************************************************
+															VERSION
+				****************************************************************************************************/
+
+				if(tab1[i-7] == '\\' && tab1[i-6] == 'v' && tab1[i-5] == 'e' && tab1[i-4] == 'r' && tab1[i-3] == 's' && tab1[i-2] == 'i' && 
+					tab1[i-1] == 'o' && tab1[i] == 'n'){
 					//puts("Version..");
 					j=0;
-					vers = 1;
-					while(vers == 1){
+					oncontinue = 1;
+
+					if(tmp[4] != 0 && j == 0)
+						j = tmp[4];
+
+					while(oncontinue == 1){
 						
-						tab_vers[j] = fgetc(file);
-						if(tab_vers[j] == '\n')
+						tab[4][j] = fgetc(file);
+						if(tab[4][j] == '\n')
 						{
-							vers = 0;
+							oncontinue = 0;
 							com_slash = 0;
+							tmp[4] = j;
 						}
 						j++;
 					}
 				}
-				if(tab[i-7] == '\\' && tab[i-6] == 'd' && tab[i-5] == 'e' && tab[i-4] == 't' && tab[i-3] == 'a' && tab[i-2] == 'i' && 
-					tab[i-1] == 'l' && tab[i] == 's'){
+
+				/****************************************************************************************************
+															DETAILS
+				****************************************************************************************************/
+
+				if(tab1[i-7] == '\\' && tab1[i-6] == 'd' && tab1[i-5] == 'e' && tab1[i-4] == 't' && tab1[i-3] == 'a' && tab1[i-2] == 'i' && 
+					tab1[i-1] == 'l' && tab1[i] == 's'){
 					//puts("Details..");
 					j=0;
 					det = 1;
+					
 
 					while(det == 1){
 						
 						tab_det[j] = fgetc(file);
+						
 						/* 
 						Dans le cas ou com_slash = 1 :
 						Si il y a un retour a la ligne mais que les trois prochains caractères sont le slash alors on continue le details 
 						car c'est toujours un commentaire
 						/!\ A voir pour le com_normal /!\
 						*/
-/*						if(tab_det[j] == '\n' && (tab_det[j+1] == '/' && tab_det[j+2] == '/' && tab_det[j+3] == '/')   ){
+
+						if(tab_det[j] == '\n' && (tab_det[j+1] == '/' && tab_det[j+2] == '/' && tab_det[j+3] == '/')   ){
 							
 								while(tab_det[j+k] != '\n'){
 									tab_det[j+k] = fgetc(file);
 									
 									if(tab_det[j+k] == '\n'){
 										det = 0;
-										com_slash = 0;
-										
+										com_slash = 0;			
 									}
 									k++;
 								}
+
 							}
-						
+						if(tab_det[j] == '\n')
+							det = 0;
 						if(tab_det[j] == '\\')
 							det = 0;
 						j++;
 					}
 				}
-				if(tab[i-4] == '\\' && tab[i-3] == 'd' && tab[i-2] == 'a' && tab[i-1] == 't' && tab[i] == 'e'){
+
+				/****************************************************************************************************
+															DATE
+				****************************************************************************************************/
+
+				if(tab1[i-4] == '\\' && tab1[i-3] == 'd' && tab1[i-2] == 'a' && tab1[i-1] == 't' && tab1[i] == 'e'){
 					//puts("Date..");
 					j=0;
-					date = 1;
-					while(date == 1){
-						tab_date[j] = fgetc(file);
+					oncontinue = 1;
+					if(tmp[5] != 0 && j == 0)
+						j = tmp[5];
+					while(oncontinue == 1){
+						tab[5][j] = fgetc(file);
 
-						if(tab_date[j] == '\n'){
-							date = 0;
+						if(tab[5][j] == '\n'){
+							oncontinue = 0;
 							com_slash = 0;
+							tmp[5] = j;
 						}
 						
 						j++;
 					}
 					
 				}
-				if(tab[i-4] == '\\' && tab[i-3] == 'f' && tab[i-2] == 'i' && tab[i-1] == 'l' && tab[i] == 'e'){
+
+				/****************************************************************************************************
+															FILE
+				****************************************************************************************************/
+
+				if(tab1[i-4] == '\\' && tab1[i-3] == 'f' && tab1[i-2] == 'i' && tab1[i-1] == 'l' && tab1[i] == 'e'){
 					//puts("File..");
 					j=0;
-					fi = 1;
-					while(fi == 1){
-						tab_fi[j] = fgetc(file);
-						if(tab_fi[j] == '\n'){
-							fi = 0;
+					oncontinue = 1;
+					if(tmp[6] != 0 && j == 0)
+						j = tmp[6];
+					while(oncontinue == 1){
+						tab[6][j] = fgetc(file);
+						if(tab[6][j] == '\n'){
+							oncontinue = 0;
 							com_slash = 0;
+							tmp[6] = j;
 						}
 						j++;
 					}
 					
 				}
-				if(tab[i-3] == '\\' && tab[i-2] == 'b' && tab[i-1] == 'u' && tab[i] == 'g' ){
+
+				/****************************************************************************************************
+															BUG
+				****************************************************************************************************/
+
+				if(tab1[i-3] == '\\' && tab1[i-2] == 'b' && tab1[i-1] == 'u' && tab1[i] == 'g' ){
 					//puts("Bug..");
 					j=0;
-					bug = 1;
-					while(bug == 1){
-						tab_bug[j] = fgetc(file);
-
-					
-						
-						if(tab_bug[j] == '\n'){
-							bug = 0;
+					oncontinue = 1;
+					if(tmp[7] != 0 && j == 0)
+						j = tmp[7];
+					while(oncontinue == 1){
+						tab[7][j] = fgetc(file);
+						if(tab[7][j] == '\n'){
+							oncontinue = 0;
 							com_slash = 0;
+							tmp[7] = j;
 						}
 						j++;
 					}
 				}
-				// return 
-				if(tab[i-6] == '\\' && tab[i-5] == 'r' && tab[i-4] == 'e' && tab[i-3] == 't' && tab[i-2] == 'u' && tab[i-1] == 'r' 
-					&& tab[i] == 'n'){
+
+				/****************************************************************************************************
+															RETURN
+				****************************************************************************************************/
+
+				if(tab1[i-6] == '\\' && tab1[i-5] == 'r' && tab1[i-4] == 'e' && tab1[i-3] == 't' && tab1[i-2] == 'u' && tab1[i-1] == 'r' 
+					&& tab1[i] == 'n'){
 					//puts("Return..");
 					j=0;
-					rt = 1;
-					while(rt == 1){
-						tab_rt[j] = fgetc(file);
-						//printf("%c",tab_rt[j]);	
-						if(tab_rt[j] == '\n')
+					oncontinue = 1;
+					if(tmp[8] != 0 && j == 0)
+						j = tmp[8];
+					while(oncontinue == 1){
+						tab[8][j] = fgetc(file);
+							
+						if(tab[8][j] == '\n')
 						{
-							rt = 0;
+							oncontinue = 0;
 							com_slash = 0;
+							tmp[8] = j;
 						}
 						j++;
 					}
@@ -288,18 +399,29 @@ int open_file(char *nom_fichier){
 		};
 	} 
 	fclose(file);
-	*/
-/*	display_tab(tab_fn);
-	display_tab(tab_au);
-	display_tab(tab_date);
-	display_tab(tab_fi);
-	display_tab(tab_bug);
-	display_tab(tab_br);
-	display_tab(tab_det);
-	display_tab(tab_vers);
-*/
+	
+	display_tab(tab[6],"File");
+	
+	display_tab(tab[0],"Function");
+	
+	display_tab(tab[3],"Author");
+	
+	display_tab(tab[5],"Date");
+	
+	display_tab(tab[7],"Bug");
+	
+	display_tab(tab[1],"Brief");
+	
+	display_tab(tab[2],"Paramaters");
 
-	fclose(file);
+	display_tab(tab_det,"Details");
+	
+	display_tab(tab[4],"Version");
+
+	display_tab(tab[8],"Return");
+
+
+	
 	return 0;
 
 }

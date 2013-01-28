@@ -20,12 +20,12 @@ encore un detail mais avec com_normal
 \bug  DOIT PAS S'AFFICHER
 //////////////////////////////////
 /// \fn suivi de sa pour la fonction()
-/** \bug BUG1 S'AFFICHE 
+/** \bug BUG S'AFFICHE 
 */
 
 Ceci n'est pas un commentaire
 fonction brief date version return param bug 
 blablalalblallaall
 
-
+dzqdqzdz
  \bug BUG2 S'AFFICHE
